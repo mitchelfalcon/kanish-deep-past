@@ -1,57 +1,102 @@
-import re
-
-class KanishTokenizer:
-    """
-    Tokenizador especializado para textos cuneiformes (Old Assyrian).
-    Separa morfemas gramaticales (-ma, -ni) sin romper logogramas.
-    """
-    
-    def __init__(self):
-        # Lista de clíticos comunes en Kanesh para separar
-        # -ma: Enfático / Conectivo
-        # -ni: Subjuntivo
-        # -kum/šum: Dativo
-        # -am: Ventivo
-        self.cliticos = [
-            'ma', 'ni', 'kum', 'šum', 'am', 'kunu', 'šunu', 'ka', 'su'
-        ]
-        
-        # Regex compilado para velocidad
-        # Busca un guion seguido de un clítico, pero SOLO si es el final de la palabra (\b)
-        self.regex_cliticos = re.compile(r'-(' + '|'.join(self.cliticos) + r')\b', re.IGNORECASE)
-
-    def tokenizar(self, texto):
-        if not texto or not isinstance(texto, str):
-            return []
-
-        texto = texto.strip()
-
-        # PASO 1: Protección de Logogramas complejos (Heurística)
-        # Si hay puntos (DUMU.ZI) asumimos que es un logograma y no lo tocamos por ahora.
-        # (En versiones futuras, esto se conecta al Grafo para validar entidades)
-
-        # PASO 2: Separación Quirúrgica de Clíticos
-        # Transforma "iqbi-ma" en "iqbi -ma"
-        texto_procesado = self.regex_cliticos.sub(r' -\1', texto)
-        
-        # PASO 3: Split estándar por espacios
-        tokens = texto_procesado.split()
-        
-        return tokens
-
-# --- BLOQUE DE PRUEBA RÁPIDA ---
-if __name__ == "__main__":
-    tk = KanishTokenizer()
-    ejemplos = [
-        "um-ma En-lil-ba-ni-ma",       # Nombre propio + clítico -ma
-        "kù-babbar i-di-in-šum",       # Verbo + clítico dativo -šum
-        "DUMU.ZI i-li-ik",             # Logograma con punto (no debe separarse)
-        "a-na bīt kar-im",             # Preposición y sustantivo
-        "[x ... ] <BROKEN>"            # Token de rotura (del paso anterior)
-    ]
-    
-    print("--- 🧪 PRUEBA DE TOKENIZACIÓN ---")
-    for ej in ejemplos:
-        print(f"ORIGINAL: {ej}")
-        print(f"TOKENS:   {tk.tokenizar(ej)}")
-        print("-" * 30)
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "cd6144eb",
+   "metadata": {
+    "_cell_guid": "b1076dfc-b9ad-4769-8c92-a6c4dae69d19",
+    "_uuid": "8f2839f25d086af736a60e9eeb907d3b93b6e0e5",
+    "execution": {
+     "iopub.execute_input": "2025-12-26T04:22:55.968748Z",
+     "iopub.status.busy": "2025-12-26T04:22:55.968158Z",
+     "iopub.status.idle": "2025-12-26T04:22:57.936954Z",
+     "shell.execute_reply": "2025-12-26T04:22:57.936087Z"
+    },
+    "papermill": {
+     "duration": 1.972302,
+     "end_time": "2025-12-26T04:22:57.938157",
+     "exception": false,
+     "start_time": "2025-12-26T04:22:55.965855",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "/kaggle/input/kanish-knowledge-graph/kanish_brain_frozen.json\n"
+     ]
+    }
+   ],
+   "source": [
+    "# This Python 3 environment comes with many helpful analytics libraries installed\n",
+    "# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python\n",
+    "# For example, here's several helpful packages to load\n",
+    "\n",
+    "import numpy as np # linear algebra\n",
+    "import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)\n",
+    "\n",
+    "# Input data files are available in the read-only \"../input/\" directory\n",
+    "# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory\n",
+    "\n",
+    "import os\n",
+    "for dirname, _, filenames in os.walk('/kaggle/input'):\n",
+    "    for filename in filenames:\n",
+    "        print(os.path.join(dirname, filename))\n",
+    "\n",
+    "# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using \"Save & Run All\" \n",
+    "# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "nvidiaTeslaT4",
+   "dataSources": [
+    {
+     "datasetId": 9119281,
+     "sourceId": 14287115,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "isGpuEnabled": true,
+   "isInternetEnabled": true,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.13"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 7.574846,
+   "end_time": "2025-12-26T04:22:58.256897",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2025-12-26T04:22:50.682051",
+   "version": "2.6.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

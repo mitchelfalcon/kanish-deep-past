@@ -1,15 +1,26 @@
-# Ignorar archivos de sistema y entornos virtuales
+# Ignorar datos pesados
+data/
+input/
+output/
+dataset_aumentado/
+golden_corpus/
+*.csv
+*.pdf
+*.zip
+
+# Ignorar modelos entrenados
+models/
+kanish_brain_frozen/
+trained_models/
+*.pt
+*.bin
+*.safetensors
+
+# Ignorar archivos de sistema y python
 __pycache__/
 *.pyc
+.ipynb_checkpoints/
 .env
-.venv
-env/
-venv/
-.DS_Store
-
-# Ignorar base de datos local (El JSON ya es el exportado)
-*.db
-neo4j_dump/
-
-# Mantener el JSON frozen (Es vital), pero ignorar otros temporales
-*.tmp
+.venv/
+ipython/
+temp_data/

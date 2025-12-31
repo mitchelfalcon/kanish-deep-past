@@ -1,0 +1,20 @@
+# --- Core AI & Deep Learning ---
+torch>=2.1.0
+transformers>=4.35.0
+accelerate>=0.25.0
+sentencepiece>=0.1.99  # Crítico para tokenizadores
+protobuf==3.20.3       # Estabilidad para modelos antiguos
+
+# --- Data Manipulation ---
+pandas>=2.1.0
+numpy>=1.24.0
+scikit-learn>=1.3.0    # Para métricas y split de datos
+
+# --- Kanish / Marduk Symbolic Layer ---
+networkx>=3.1          # Para tu grafo de conocimiento (Cerebro Kanish)
+Levenshtein>=0.23.0    # Para corrección difusa (Fuzzy matching)
+
+# --- Visualization & Reporting ---
+matplotlib>=3.7.0
+visdcc>=0.0.50         # Si usas visualización web
+jupyter                # Para ejecutar los notebooks

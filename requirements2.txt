@@ -3,7 +3,7 @@ torch>=2.1.0
 transformers>=4.35.0
 accelerate>=0.25.0
 sentencepiece>=0.1.99  # Crítico para tokenizadores
-protobuf==3.20.3       # Estabilidad para modelos antiguos
+protobuf==4.25.8       # Estabilidad para modelos antiguos
 
 # --- Data Manipulation ---
 pandas>=2.1.0
